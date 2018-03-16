@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">AudioAndVideo</string>
+
+    <string name="title1">task1：绘制一张图片</string>
+    <string name="title2">task2：音频采集与播放</string>
+    <string name="title3">task3：视频采集与预览</string>
+    <string name="title4">task4：学习MediaExtractor和MediaMuxer</string>
+    <string name="title5">task5：学习OpenGLES 上</string>
+    <string name="title6">task6：学习OpenGLES 下</string>
+    <string name="title7">task7：学习MediaCodec 上</string>
+    <string name="title8">task8：学习MediaCodec 下</string>
+    <string name="title9">task9：串联整个音视频录制流程</string>
+    <string name="title10">task10：串联整个音视频播放流程</string>
+    <string name="title11">task11：进一步学习OpenGLES</string>
+    <string name="title12">task12：学习 Android 图形图像架构</string>
+    <string name="title13">task13：深入研究音视频相关的网络协议</string>
+    <string name="title14">task14：深入学习一些音视频领域的开源项目</string>
+    <string name="title15">task15：移植ffmpeg到Android</string>
+    <string name="title16">task16：x264</string>
+    <string name="title17">task17：librtmp</string>
+    <string name="title18">task18：短视频APP</string>
+    <!--<string name="title19">task19：x264</string>-->
+    <!--<string name="title20">task20：x264</string>-->
+    <!--<string name="title21">task21：x264</string>-->
+    <!--<string name="title22">task22：x264</string>-->
+
+
 </resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_show_bitmap"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.zhangchao.audioandvideo.task.task1_showbitmap.Task1ShowBitmapActivity">
+    
+    <ImageView
+        android:id="@+id/ivShowBitmap"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimenPx300"
+        android:background="@mipmap/test"
+        />
+
+    <com.zhangchao.audioandvideo.task.task1_showbitmap.ExampleSurfaceView
+        android:id="@+id/svShowBitmap"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimenPx0"
+        android:layout_weight="1"/>
+
+</LinearLayout>
