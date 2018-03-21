@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.miuibbs.xrecyclerview.BaseAdapter;
-import com.miuibbs.xrecyclerview.XRecyclerView;
+import com.example.xrecyclerview.BaseAdapter;
+import com.example.xrecyclerview.XRecyclerView;
 import com.zhangchao.audioandvideo.R;
 
 

@@ -5,9 +5,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.miuibbs.xrecyclerview.BaseAdapter;
-import com.miuibbs.xrecyclerview.CommonViewHolder;
 import com.zhangchao.audioandvideo.R;
+import com.example.xrecyclerview.BaseAdapter;
+import com.example.xrecyclerview.CommonViewHolder;
 import com.zhangchao.audioandvideo.Util.ModelUtil;
 
 /**

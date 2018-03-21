@@ -19,6 +19,7 @@ import com.zhangchao.audioandvideo.R;
 
 /**
  * Created by zhangchao on 18-3-16.
+ * 参考 https://www.cnblogs.com/zhangyingai/p/7087371.html
  */
 
 public class ExampleSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable {

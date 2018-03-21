@@ -1,1 +1,1 @@
-include ':app', ':commonlib', 'xrecyclerview'
+include ':app', ':commonlib', 'xrecyclerview', 'permission'
