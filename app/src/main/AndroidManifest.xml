@@ -2,6 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zhangchao.audioandvideo">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!--注意：如果你使用Intent发送快速拍照请求，你的应用无需申请该权限。-->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!--Storage Permission - 如果你的应用需要保持照片或者视频到设备存储中，你必须在Manifest指定文件的写权限-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--Audio Recording Permission - 你必须申请录音权限才能使用相机来录像.-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!--Location Permission - 当然如果你需要拍摄的照片记录地理位置，你同样需要申请如下权限-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,7 +26,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".task.task1_showbitmap.Task1ShowBitmapActivity"></activity>
+        <activity android:name=".task.task1_showbitmap.Task1ShowBitmapActivity" />
+        <activity android:name=".task.task2_audiocaptureandplay.Task2AudioCaptureAndPlayActivity" />
+        <activity android:name=".webview.WebViewActivity" />
+        <activity android:name=".task.task3_CameraPreview.Task3CameraPreviewActivity"></activity>
     </application>
 
 </manifest>

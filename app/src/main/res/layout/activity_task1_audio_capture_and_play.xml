@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_task1_audio_capture_and_play"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="com.zhangchao.audioandvideo.task.task2_audiocaptureandplay.Task2AudioCaptureAndPlayActivity">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvStartCapture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimenPx20"
+            android:text="@string/start_capture" />
+
+        <TextView
+            android:id="@+id/tvStopCapture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimenPx20"
+            android:layout_marginLeft="@dimen/dimenPx20"
+            android:text="@string/stop_capture" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvStartPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimenPx20"
+            android:text="@string/start_play" />
+
+        <TextView
+            android:id="@+id/tvStopPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimenPx20"
+            android:layout_marginLeft="@dimen/dimenPx20"
+            android:text="@string/stop_play" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

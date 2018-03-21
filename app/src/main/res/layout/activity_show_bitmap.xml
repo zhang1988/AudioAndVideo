@@ -6,18 +6,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.zhangchao.audioandvideo.task.task1_showbitmap.Task1ShowBitmapActivity">
-    
+
+    <com.example.xrecyclerview.XRecyclerView
+        android:id="@+id/grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <ImageView
         android:id="@+id/ivShowBitmap"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimenPx300"
-        android:background="@mipmap/test"
-        />
+        android:background="@mipmap/test" />
 
     <com.zhangchao.audioandvideo.task.task1_showbitmap.ExampleSurfaceView
         android:id="@+id/svShowBitmap"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimenPx0"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
 </LinearLayout>

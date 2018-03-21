@@ -25,4 +25,10 @@
     <!--<string name="title22">task22：x264</string>-->
 
 
+    <string name="start_capture">开始录制</string>
+    <string name="stop_capture">停止录制</string>
+    <string name="start_play">开始播放</string>
+    <string name="stop_play">停止播放</string>
+
+
 </resources>

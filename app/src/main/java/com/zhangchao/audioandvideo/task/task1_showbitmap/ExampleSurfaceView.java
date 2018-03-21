@@ -17,6 +17,7 @@ import com.zhangchao.audioandvideo.R;
 
 /**
  * Created by zhangchao on 18-3-16.
+ * 参考 https://www.cnblogs.com/zhangyingai/p/7087371.html
  */
 
 public class ExampleSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
@@ -61,7 +62,7 @@ public class ExampleSurfaceView extends SurfaceView implements SurfaceHolder.Cal
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(6);
         mPaint.setColor(Color.RED);
-        setBackgroundResource(R.mipmap.test2);
+        //setBackgroundResource(R.mipmap.test2);
     }
 
     @Override
