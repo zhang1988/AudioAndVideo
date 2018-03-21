@@ -1,6 +1,6 @@
 package com.zhangchao.audioandvideo.Util;
 
-import com.zhangchao.audioandvideo.ClassInfo;
+import com.zhangchao.audioandvideo.main.ClassInfo;
 import com.zhangchao.audioandvideo.R;
 import com.zhangchao.audioandvideo.task.task1_showbitmap.Task1ShowBitmapActivity;
 

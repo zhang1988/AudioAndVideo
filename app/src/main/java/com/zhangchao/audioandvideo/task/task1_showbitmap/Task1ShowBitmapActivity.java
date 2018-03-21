@@ -1,12 +1,12 @@
 package com.zhangchao.audioandvideo.task.task1_showbitmap;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.zhangchao.audioandvideo.BaseActivity;
 import com.zhangchao.audioandvideo.R;
 
-public class Task1ShowBitmapActivity extends AppCompatActivity {
+public class Task1ShowBitmapActivity extends BaseActivity {
     private ImageView ivShowBitmap;
     private ExampleSurfaceView exampleSurfaceView;
 

@@ -1,11 +1,13 @@
 package com.zhangchao.audioandvideo.task.task1_showbitmap;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.drawable.RotateDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -20,7 +22,7 @@ import com.zhangchao.audioandvideo.R;
  */
 
 public class ExampleSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
-    public static final int FRAME_TIME = 120;
+    public static final int FRAME_TIME = 160;
     private SurfaceHolder mHolder;
     private Canvas mCanvas;
     private Paint mPaint;
@@ -45,6 +47,7 @@ public class ExampleSurfaceView extends SurfaceView implements SurfaceHolder.Cal
         initView();
     }
 
+    @TargetApi(21)
     public ExampleSurfaceView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initView();
@@ -61,7 +64,7 @@ public class ExampleSurfaceView extends SurfaceView implements SurfaceHolder.Cal
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(6);
         mPaint.setColor(Color.RED);
-        setBackgroundResource(R.mipmap.test2);
+        //setBackgroundResource(R.mipmap.test2);
     }
 
     @Override
@@ -84,7 +87,8 @@ public class ExampleSurfaceView extends SurfaceView implements SurfaceHolder.Cal
     public void run() {
         long start;
         long end;
-        drawBitmap();
+        // 如果在循环外先画一个北京，会不停的闪烁。必须在while里面每次画背景.原理？
+        //drawBitmap();
         while (mIsEnableDrawing) {
             start = System.currentTimeMillis();
             draw();
@@ -99,10 +103,14 @@ public class ExampleSurfaceView extends SurfaceView implements SurfaceHolder.Cal
         }
     }
 
-    private void drawBitmap(){
+    private void drawBitmap() {
         try {
+            Paint mBitPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            mBitPaint.setFilterBitmap(true);
+            mBitPaint.setDither(true);
             mCanvas = mHolder.lockCanvas();
-            mCanvas.drawBitmap(BitmapFactory.decodeResource(getContext().getResources(),R.mipmap.test2),0,0,mPaint);
+            //mCanvas.drawBitmap(BitmapFactory.decodeResource(getContext().getResources(),R.mipmap.test2),0,0,mBitPaint);
+            mCanvas.drawColor(Color.WHITE);
         } catch (Exception e) {
 
         } finally {
@@ -116,7 +124,9 @@ public class ExampleSurfaceView extends SurfaceView implements SurfaceHolder.Cal
     private void draw() {
         try {
             mCanvas = mHolder.lockCanvas();
-            mCanvas.drawPath(mPath,mPaint);
+            mCanvas.drawBitmap(BitmapFactory.decodeResource(getContext().getResources(), R.mipmap.test2), 0, 0, mPaint);
+            //mCanvas.drawColor(Color.WHITE);
+            mCanvas.drawPath(mPath, mPaint);
         } catch (Exception e) {
 
         } finally {
@@ -129,20 +139,20 @@ public class ExampleSurfaceView extends SurfaceView implements SurfaceHolder.Cal
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int x = (int)event.getX();
+        int x = (int) event.getX();
         int y = (int) event.getY();
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 Log.d("s", "onTouchEvent: down");
-                mPath.moveTo(x,y);
+                mPath.moveTo(x, y);
                 break;
             case MotionEvent.ACTION_UP:
                 Log.d("s", "onTouchEvent: up");
                 break;
             case MotionEvent.ACTION_MOVE:
                 Log.d("s", "onTouchEvent: move");
-                mPath.lineTo(x,y);
+                mPath.lineTo(x, y);
                 break;
             default:
                 break;

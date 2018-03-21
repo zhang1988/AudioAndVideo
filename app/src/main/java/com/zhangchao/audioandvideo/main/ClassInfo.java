@@ -1,4 +1,4 @@
-package com.zhangchao.audioandvideo;
+package com.zhangchao.audioandvideo.main;
 
 import android.app.Activity;
 

@@ -1,4 +1,4 @@
-package com.zhangchao.audioandvideo;
+package com.zhangchao.audioandvideo.main;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.miuibbs.xrecyclerview.BaseAdapter;
 import com.miuibbs.xrecyclerview.CommonViewHolder;
+import com.zhangchao.audioandvideo.R;
 import com.zhangchao.audioandvideo.Util.ModelUtil;
 
 /**
