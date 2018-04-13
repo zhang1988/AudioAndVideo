@@ -19,14 +19,14 @@ public class Task1ShowBitmapActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_bitmap);
-        init();
     }
 
-    private void init() {
+    @Override
+    protected void initView() {
         new GridHelper(this).addItem(new ItemUrlData("8种scaleType", "https://www.jianshu.com/p/ea8a48768a2e"))
-                .addItem(new ItemBtnData("ss", new View.OnClickListener() {
+                .addItem(new ItemBtnData("ss", new ItemBtnData.onItemBtnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onItemBtnClick(View v,String key) {
                         Toast.makeText(v.getContext(),"sss",Toast.LENGTH_LONG).show();
                     }
                 }))

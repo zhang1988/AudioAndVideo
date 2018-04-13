@@ -1,1 +1,22 @@
+# directory ".gradle"
+.gradle
+
+/local.properties
+
+# IntelliJ IDEA/Android Studio IDE file
+/.idea
+# IntelliJ IDEA/Android Studio project file
+*.iml
+
+# Mac OS file system dummy file
+.DS_Store
+
+# directory "build"
 /build
+commonlib/build/
+ptr-lib/build
+
+/captures
+
+#.swp
+*.swp

@@ -31,6 +31,10 @@ public class GridHelper {
 
     }
 
+    public static GridHelper newInstance(AppCompatActivity activity) {
+        return new GridHelper(activity);
+    }
+
     public GridHelper addItem(BaseItem item){
         mAdapter.addItem(item);
         return this;
@@ -43,6 +47,7 @@ public class GridHelper {
         } else {
             xRecyclerView.setGridLayoutManager(3);
         }
+        mAdapter.notifyDataSetChanged();
     }
 
     private void initGridView() {
@@ -77,7 +82,6 @@ public class GridHelper {
 
         @Override
         public void onBindViewHolder(CommonViewHolder holder, int position) {
-
             super.onBindViewHolder(holder, position);
         }
 
@@ -100,7 +104,7 @@ public class GridHelper {
                 if (item == null) {
                     return;
                 }
-
+                itemView.setTag(item.title);//onclick使用
                 tvTitle.setText(item.title);
             }
         }

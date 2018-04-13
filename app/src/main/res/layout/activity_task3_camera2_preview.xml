@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_show_bitmap"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.zhangchao.audioandvideo.task.task1_showbitmap.Task1ShowBitmapActivity">
+
+    <com.example.xrecyclerview.XRecyclerView
+        android:id="@+id/grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <FrameLayout
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <com.zhangchao.audioandvideo.task.task3_CameraPreview.AutoFitTextureView
+            android:id="@+id/tvPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:id="@+id/iv_focus"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/focus_area"
+            android:visibility="invisible" />
+
+        <!--<SurfaceView-->
+            <!--android:id="@+id/svPreview"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1"/>-->
+    </FrameLayout>
+
+</LinearLayout>

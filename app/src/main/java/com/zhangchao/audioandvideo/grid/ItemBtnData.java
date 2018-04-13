@@ -7,13 +7,20 @@ import android.view.View;
  * Created by zhangchao on 18-3-20.
  */
 
-public class ItemBtnData extends BaseItem<View.OnClickListener>{
-    public ItemBtnData(String title, View.OnClickListener listener) {
+public class ItemBtnData extends BaseItem<ItemBtnData.onItemBtnClickListener> {
+    public ItemBtnData(String title, ItemBtnData.onItemBtnClickListener listener) {
         super(title, listener);
     }
 
     @Override
     public void onClick(RecyclerView parent, View view, int position, long id) {
-        data.onClick(view);
+        data.onItemBtnClick(view, title);
+    }
+
+    /**
+     *
+     */
+    public static interface onItemBtnClickListener{
+        void onItemBtnClick(View view,String key);
     }
 }

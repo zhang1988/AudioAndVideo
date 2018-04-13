@@ -1,44 +1,53 @@
 package com.zhangchao.audioandvideo.task.task2_audiocaptureandplay;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
+import com.zhangchao.audioandvideo.BaseActivity;
 import com.zhangchao.audioandvideo.R;
-import com.zhangchao.audioandvideo.webview.WebViewActivity;
+import com.zhangchao.audioandvideo.grid.GridHelper;
+import com.zhangchao.audioandvideo.grid.ItemBtnData;
 
+public class Task2AudioCaptureAndPlayActivity extends BaseActivity {
 
-public class Task2AudioCaptureAndPlayActivity extends AppCompatActivity implements View.OnClickListener{
+    private AudioManager mAudioRecorder;
 
-    private TextView tvCapture;
-    private TextView tvStopCapture;
-
-    private TextView tvPlay;
-    private TextView tvStopPlay;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task1_audio_capture_and_play);
-        initView();
-    }
-
-    private void initView() {
-        tvCapture = (TextView) findViewById(R.id.tvStartCapture);
-        tvStopCapture = (TextView) findViewById(R.id.tvStopCapture);
-        tvPlay = (TextView) findViewById(R.id.tvStartPlay);
-        tvStopPlay = (TextView) findViewById(R.id.tvStopPlay);
-
-        tvCapture.setOnClickListener(this);
+        mAudioRecorder = new AudioManager();
     }
 
     @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        switch (id){
-            case R.id.tvStartCapture:
-                startActivity(new Intent(this, WebViewActivity.class));
-        }
+    protected void initView() {
+        new GridHelper(this)
+                .addItem(new ItemBtnData("开始录音", new ItemBtnData.onItemBtnClickListener() {
+                    @Override
+                    public void onItemBtnClick(View v,String key) {
+                        mAudioRecorder.startRecord();
+                    }
+                }))
+                .addItem(new ItemBtnData("停止录音", new ItemBtnData.onItemBtnClickListener() {
+                    @Override
+                    public void onItemBtnClick(View v,String key) {
+                        mAudioRecorder.stopRecord();
+                    }
+                }))
+                .addItem(new ItemBtnData("开始播放", new ItemBtnData.onItemBtnClickListener() {
+                    @Override
+                    public void onItemBtnClick(View v,String key) {
+                        mAudioRecorder.play();
+                    }
+                }))
+                .addItem(new ItemBtnData("停止播放", new ItemBtnData.onItemBtnClickListener() {
+                    @Override
+                    public void onItemBtnClick(View v,String key) {
+                        mAudioRecorder.stopPlay();
+                    }
+                }))
+                .notifyDataAddCompleted();
     }
+
+
 }

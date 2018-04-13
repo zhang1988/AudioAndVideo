@@ -11,10 +11,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_base);
         initActionBar();
+        initView();
     }
 
     private void initActionBar() {
         mActionBar = new CustomActionBar(this,getSupportActionBar());
         mActionBar.setLeftIconAsBack();
     }
+
+    protected abstract void initView();
 }

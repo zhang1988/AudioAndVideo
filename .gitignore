@@ -62,3 +62,20 @@ google-services.json
 freeline.py
 freeline/
 freeline_project_description.json
+
+
+# directory ".gradle"
+.gradle
+
+/local.properties
+
+# IntelliJ IDEA/Android Studio IDE file
+/.idea
+# IntelliJ IDEA/Android Studio project file
+*.iml
+
+# Mac OS file system dummy file
+.DS_Store
+
+#.swp
+*.swp

@@ -4,6 +4,7 @@ import com.zhangchao.audioandvideo.main.ClassInfo;
 import com.zhangchao.audioandvideo.R;
 import com.zhangchao.audioandvideo.task.task1_showbitmap.Task1ShowBitmapActivity;
 import com.zhangchao.audioandvideo.task.task2_audiocaptureandplay.Task2AudioCaptureAndPlayActivity;
+import com.zhangchao.audioandvideo.task.task3_CameraPreview.camera2.Task3Camera2PreviewActivity;
 import com.zhangchao.audioandvideo.task.task3_CameraPreview.Task3CameraPreviewActivity;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class ModelUtil {
         result.add(new ClassInfo(R.string.title1, Task1ShowBitmapActivity.class));
         result.add(new ClassInfo(R.string.title2, Task2AudioCaptureAndPlayActivity.class));
         result.add(new ClassInfo(R.string.title3, Task3CameraPreviewActivity.class));
+        result.add(new ClassInfo(R.string.title3, Task3Camera2PreviewActivity.class));
         return result;
     }
 }

@@ -6,24 +6,34 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.zhangchao.audioandvideo.task.task3_CameraPreview.Task3CameraPreviewActivity">
+
     <com.example.xrecyclerview.XRecyclerView
         android:id="@+id/grid"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <FrameLayout
+        android:background="#FF0000"
+        android:paddingBottom="@dimen/dimenPx40"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimenPx0">
+        android:layout_height="@dimen/dimenPx0"
+        android:layout_weight="1">
 
-        <SurfaceView
-            android:id="@+id/svPreview"
+        <com.zhangchao.audioandvideo.task.task3_CameraPreview.RecordVideoSurfaceView
+            android:id="@+id/svVideoPreview"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimenPx0" />
+            android:layout_height="match_parent" />
+        <!--<com.zhangchao.audioandvideo.task.task3_CameraPreview.TakePicSurfaceView-->
+        <!--android:id="@+id/svPicView"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp" />-->
 
-        <TextureView
-            android:id="@+id/tvPreview"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimenPx0" />
+        <!--<TextureView-->
+            <!--android:id="@+id/tvPreview"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:visibility="gone" />-->
 
     </FrameLayout>
 </LinearLayout>
