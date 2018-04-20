@@ -13,6 +13,13 @@ android {
         externalNativeBuild {
             cmake {
                 cppFlags ""
+                //必须要有abiFilters，否则报错：error adding symbols:File in wrong format
+                //abiFilters 指定要编译的平台。相应的文件夹下就应该有so文件
+                abiFilters 'armeabi-v7a'//, 'x86'//, 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+            }
+            ndkBuild{
+                //arguments "APP_DEPRECATED_HEADERS=true"
+                arguments "NDK_TOOLCHAIN_VERSION=4.9"
             }
         }
     }
@@ -20,6 +27,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets{
+        main{
+            jniLibs.srcDirs = ['src/main/jniLibs']
+            jni.srcDirs = []
         }
     }
     externalNativeBuild {
@@ -30,7 +44,7 @@ android {
 }
 
 dependencies {
-    //provided fileTree(dir: 'libs', include: '*.jar')
+    provided fileTree(dir: 'libs', include: '*.jar')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

@@ -164,7 +164,7 @@ public class RecordVideoSurfaceView extends SurfaceView implements SurfaceHolder
                 mCamera = null;
             } catch (Exception e) {
 
-            }// lock camera for later use
+            }// queue_lock camera for later use
         }
     }
 

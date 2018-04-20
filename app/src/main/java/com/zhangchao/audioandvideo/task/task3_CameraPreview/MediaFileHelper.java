@@ -81,8 +81,9 @@ public class MediaFileHelper {
 
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
+            mediaStorageDir.mkdir();
             Log.d("MyCameraApp", "no directory");
-            return null;
+            //return null;
         }
         return mediaStorageDir;
     }
