@@ -32,8 +32,9 @@ android {
 
     sourceSets{
         main{
-            jniLibs.srcDirs = ['src/main/jniLibs']
+            jniLibs.srcDirs = ['src/main/jniLibs','/Users/zhangchao/AndroidStudioProjects/AudioAndVideo/app/build/intermediates/cmake/debug/obj/armeabi-v7a']
             jni.srcDirs = []
+
         }
     }
     externalNativeBuild {

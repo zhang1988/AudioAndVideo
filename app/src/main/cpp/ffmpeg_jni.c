@@ -107,12 +107,10 @@ void thread_decode_videos(JNIEnv *env, int m) {
     LOGE("%s: DetachCurrentThread() failed", __FUNCTION__);
 }
 
-JNIEXPORT int JNICALL Java_com_zhangchao_audioandvideo_task_task_1ffmpeg_Task_1FFmpegActivity_native_1initFFmpeg
+JNIEXPORT int JNICALL
+Java_com_zhangchao_audioandvideo_task_task_1ffmpeg_Task_1FFmpegActivity_native_1initFFmpeg
         (JNIEnv *env, jobject object, jstring path, jobject screen) {
     initEnvironment(env, object, screen);
-
-    int m;
-    //thread_decode_videos(env, m);
 
     //log_e("S","s");
     const char *filePath = (*env)->GetStringUTFChars(env, path, NULL);//jstring2CStr(env, path);
@@ -169,101 +167,125 @@ JNIEXPORT int JNICALL Java_com_zhangchao_audioandvideo_task_task_1ffmpeg_Task_1F
         __android_log_print(ANDROID_LOG_ERROR, "tag", "message: %s", "Didn't open codec.");
         return -6; // Could not open codec
     }
-//
-//    //nativeWindow 初始化失败，需要在surfaceCreated里使用surface：http://www.xuebuyuan.com/2183201.html
-//    ANativeWindow *nativeWindow = ANativeWindow_fromSurface(env, screen);
-//    if (nativeWindow == NULL) {
-//        __android_log_print(ANDROID_LOG_ERROR, "tag", "message: %s",
-//                            "Didn't allocate ANativeWindow.");
-//        return -7;
-//    }
 
     //这里width为0：set_target_properties制定ffmpeg的so文件时，使用有数字结尾的，比如libavformat-56.so
     int video_W = pCodecCtx->width;
     int video_H = pCodecCtx->height;
     g_video_W = video_W;
     g_video_H = video_H;
-    g_pix_fmt =  pCodecCtx->pix_fmt;
+    g_pix_fmt = pCodecCtx->pix_fmt;
     __android_log_print(ANDROID_LOG_ERROR, "tag", "message: %d,%d", pCodecCtx->width,
                         pCodecCtx->height);
 
 
+    //current thread
+    ANativeWindow_Buffer windowBuffer;
+    struct SwsContext *pSwsCtx = NULL;
+    ANativeWindow *nativeWindow = NULL;
+    AVFrame *pAVFrame = NULL;
+    AVFrame *pFrameRGBA = NULL;
+    uint8_t *buffer = NULL;
 
-//    // 设置native window的buffer大小,可自动拉伸
-//    ANativeWindow_setBuffersGeometry(nativeWindow, video_W, video_H, WINDOW_FORMAT_RGBA_8888);
-//    ANativeWindow_Buffer windowBuffer;
-//
-//    AVFrame *pAVFrame = av_frame_alloc();
-//    //用于渲染
-//    AVFrame *pFrameRGBA = av_frame_alloc();
-//
-//    if (pFrameRGBA == NULL || pAVFrame == NULL) {
-//        __android_log_print(ANDROID_LOG_ERROR, "tag", "message: %s", "Didn't allocate frame.");
-//        return -8;
-//    }
-//
-//    // Determine required buffer size and allocate buffer
-//    int numBytes = av_image_get_buffer_size(AV_PIX_FMT_RGBA, video_W, video_H, 1);
-//    uint8_t *buffer = (uint8_t *) av_malloc(numBytes * sizeof(uint8_t));
-//    av_image_fill_arrays(pFrameRGBA->data, pFrameRGBA->linesize, buffer, AV_PIX_FMT_RGBA,
-//                         video_W, video_H, 1);
-//
-//    // 由于解码出来的帧格式不是RGBA的,在渲染之前需要进行格式转换
-//    struct SwsContext *pSwsCtx = sws_getContext(video_W,
-//                                                video_H,
-//                                                pCodecCtx->pix_fmt,
-//                                                video_W,
-//                                                video_H,
-//                                                AV_PIX_FMT_RGBA,
-//                                                SWS_BILINEAR,
-//                                                NULL,
-//                                                NULL,
-//                                                NULL);
+    //video thread
+    int size_avframe = sizeof(AVFrame);
+    Frame *pFrame = NULL;
+
+    int show_on_current_thread = 0;
+    if (show_on_current_thread) {
+        //nativeWindow 初始化失败，需要在surfaceCreated里使用surface：http://www.xuebuyuan.com/2183201.html
+        nativeWindow = ANativeWindow_fromSurface(env, screen);
+        if (nativeWindow == NULL) {
+            __android_log_print(ANDROID_LOG_ERROR, "tag", "message: %s",
+                                "Didn't allocate ANativeWindow.");
+            return -7;
+        }
+
+        // 设置native window的buffer大小,可自动拉伸
+        ANativeWindow_setBuffersGeometry(nativeWindow, video_W, video_H, WINDOW_FORMAT_RGBA_8888);
+
+        pAVFrame = av_frame_alloc();
+        //用于渲染
+        pFrameRGBA = av_frame_alloc();
+
+        if (pFrameRGBA == NULL || pAVFrame == NULL) {
+            __android_log_print(ANDROID_LOG_ERROR, "tag", "message: %s", "Didn't allocate frame.");
+            return -8;
+        }
+
+        // Determine required buffer size and allocate buffer
+        int numBytes = av_image_get_buffer_size(AV_PIX_FMT_RGBA, video_W, video_H, 1);
+        buffer = (uint8_t *) av_malloc(numBytes * sizeof(uint8_t));
+        av_image_fill_arrays(pFrameRGBA->data, pFrameRGBA->linesize, buffer, AV_PIX_FMT_RGBA,
+                             video_W, video_H, 1);
+
+        // 由于解码出来的帧格式不是RGBA的,在渲染之前需要进行格式转换
+        pSwsCtx = sws_getContext(video_W,
+                                 video_H,
+                                 pCodecCtx->pix_fmt,
+                                 video_W,
+                                 video_H,
+                                 AV_PIX_FMT_RGBA,
+                                 SWS_BILINEAR,
+                                 NULL,
+                                 NULL,
+                                 NULL);
+    } else {
+        create_video_decode_thread();
+        initQueue(30);
+    }
 
 
     int frameFinished;
     AVPacket packet;
     int k = 0;
-    initQueue(4);
-    create_video_decode_thread();
-    Frame *pFrame = obtainFrame();
-    Frame *tmp_to_enqueue = NULL;
     while (av_read_frame(pAvFormatContext, &packet) >= 0) {
         if (packet.stream_index == videoStream) {
             //decode video
-            avcodec_decode_video2(pCodecCtx, pFrame->pAVFrame, &frameFinished, &packet);
-            if (frameFinished) {
-                tmp_to_enqueue = pFrame;
-                pFrame = NULL;//
-                enqueue(tmp_to_enqueue);
+            if (show_on_current_thread) {
+                avcodec_decode_video2(pCodecCtx, pAVFrame, &frameFinished, &packet);
+            } else {
                 pFrame = obtainFrame();
                 while (pFrame == NULL) {
-                    sleep(1);
+                    usleep(25000);
                     pFrame = obtainFrame();
                 }
-//                // queue_lock native window buffer
-//                ANativeWindow_lock(nativeWindow, &windowBuffer, 0);
-//
-//                //格式转换
-//                sws_scale(pSwsCtx, (uint8_t const *const *) pAVFrame->data,
-//                          pAVFrame->linesize, 0, video_H,
-//                          pFrameRGBA->data, pFrameRGBA->linesize);
-//
-//                // 获取stride
-//                uint8_t *dst = windowBuffer.bits;
-//                //stride表示存储一行像素需要的内存。
-//                int dstStride = windowBuffer.stride * 4;
-//                uint8_t *src = (uint8_t *) (pFrameRGBA->data[0]);
-//                int srcStride = pFrameRGBA->linesize[0];
-//
-//                // 由于window的stride和帧的stride不同,因此需要逐行复制
-//                int h;
-//                for (h = 0; h < video_H; ++h) {
-//                    memcpy(dst + h * dstStride, src + h * srcStride, srcStride);
-//                }
-//
-//                ANativeWindow_unlockAndPost(nativeWindow);
-                __android_log_print(ANDROID_LOG_ERROR, "tag", "message: decode %s,%d", "frame:", ++k);
+                memset(pFrame->pAVFrame, 0, size_avframe);
+                avcodec_decode_video2(pCodecCtx, pFrame->pAVFrame, &frameFinished, &packet);
+            }
+
+            if (frameFinished) {
+                if (show_on_current_thread) {
+                    // queue_lock native window buffer
+                    ANativeWindow_lock(nativeWindow, &windowBuffer, 0);
+
+                    //格式转换
+                    sws_scale(pSwsCtx, (uint8_t const *const *) pAVFrame->data,
+                              pAVFrame->linesize, 0, video_H,
+                              pFrameRGBA->data, pFrameRGBA->linesize);
+
+                    // 获取stride
+                    uint8_t *dst = windowBuffer.bits;
+                    //stride表示存储一行像素需要的内存。
+                    int dstStride = windowBuffer.stride * 4;
+                    uint8_t *src = (uint8_t *) (pFrameRGBA->data[0]);
+                    int srcStride = pFrameRGBA->linesize[0];
+
+                    // 由于window的stride和帧的stride不同,因此需要逐行复制
+
+                    for (int h = 0; h < video_H; ++h) {
+                        memcpy(dst + h * dstStride, src + h * srcStride, srcStride);
+                    }
+
+                    ANativeWindow_unlockAndPost(nativeWindow);
+                    //LOGE("show frame:%d",++k);
+                    LOGE("show frame:%lld,%lld,%lld,%lld",pAVFrame->pts,pAVFrame->pkt_pts,pAVFrame->pkt_dts,pAVFrame->pkt_pos);
+
+                } else {
+                    pFrame->pos = k;
+                    enqueue(pFrame);
+                }
+                __android_log_print(ANDROID_LOG_ERROR, "tag", "message: decode %s,%d", "frame:",
+                                    ++k);
 
             }
         } else if (packet.stream_index == audioStream) {
@@ -272,38 +294,45 @@ JNIEXPORT int JNICALL Java_com_zhangchao_audioandvideo_task_task_1ffmpeg_Task_1F
         av_packet_unref(&packet);
     }
 
-    //退出码
-    pFrame->code = 1;
-    enqueue(pFrame);
+    if (show_on_current_thread) {
+        av_free(buffer);
+        av_free(pFrameRGBA);
 
-    //av_free(buffer);
-    //av_free(pFrameRGBA);
+        // Free the YUV frame
+        av_free(pAVFrame);
+    } else {
+        //退出码
+        pFrame->code = 1;
+        enqueue(pFrame);
+    }
 
-    // Free the YUV frame
-    //av_free(pAVFrame);
 
     // Close the codec
     avcodec_close(pCodecCtx);
 
     // Close the video file
     avformat_close_input(&pAvFormatContext);
-
-    int ver = avcodec_version();
+    pthread_t tid = pthread_self();
+    LOGE("exit111:%ld",tid);
+    sleep(10);
     return 0;
 }
 
 
-JNIEXPORT void JNICALL Java_com_zhangchao_audioandvideo_task_task_1ffmpeg_Task_1FFmpegActivity_native_1setMediaPath
+JNIEXPORT void JNICALL
+Java_com_zhangchao_audioandvideo_task_task_1ffmpeg_Task_1FFmpegActivity_native_1setMediaPath
         (JNIEnv *env, jobject object, jstring string) {
 
 }
 
-JNIEXPORT void JNICALL Java_com_zhangchao_audioandvideo_task_task_1ffmpeg_Task_1FFmpegActivity_native_1setMediaScreen
+JNIEXPORT void JNICALL
+Java_com_zhangchao_audioandvideo_task_task_1ffmpeg_Task_1FFmpegActivity_native_1setMediaScreen
         (JNIEnv *env, jobject object, jobject screen) {
 
 }
 
-JNIEXPORT void JNICALL Java_com_zhangchao_audioandvideo_task_task_1ffmpeg_Task_1FFmpegActivity_native_1setCallback
+JNIEXPORT void JNICALL
+Java_com_zhangchao_audioandvideo_task_task_1ffmpeg_Task_1FFmpegActivity_native_1setCallback
         (JNIEnv *env, jobject object, jobject callback) {
 
 }

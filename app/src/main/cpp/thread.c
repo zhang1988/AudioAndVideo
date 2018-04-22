@@ -39,7 +39,7 @@ void *thread_decode_video(void *arg) {
     JNIEnv *env;
     jclass cls;
     jmethodID mid;
-
+    //sleep(2);
     //Attach主线程
     if ((*g_jvm)->AttachCurrentThread(g_jvm, &env, NULL) != JNI_OK) {
         LOGE("%s: AttachCurrentThread() failed", __FUNCTION__);
@@ -84,11 +84,16 @@ void *thread_decode_video(void *arg) {
                                                 NULL,
                                                 NULL);
 
-    Frame *tmp_to_recycle = NULL;
+    int k = 0;
+    uint8_t *dst;
+    int dstStride;
+    uint8_t *src;
+    int srcStride;
+    Frame *pFrame;
     while (true) {
-        Frame *pFrame = dequeue();
+        pFrame = dequeue();
         while (pFrame == NULL) {
-            sleep(1);
+            usleep(1000);
             pFrame = dequeue();
         }
 
@@ -101,7 +106,9 @@ void *thread_decode_video(void *arg) {
             }
             break;
         }
-        LOGE("start show one frame");
+        LOGE("show frame pos:%d",pFrame->pos);
+        LOGE("show frame:%d",++k);
+        LOGE("show frame:%lld,%lld,%lld,%lld",pFrame->pAVFrame->pts,pFrame->pAVFrame->pkt_pts,pFrame->pAVFrame->pkt_dts,pFrame->pAVFrame->pkt_pos);
 
         ANativeWindow_lock(nativeWindow, &windowBuffer, 0);
         //格式转换
@@ -110,23 +117,21 @@ void *thread_decode_video(void *arg) {
                   pFrameRGBA->data, pFrameRGBA->linesize);
 
         // 获取stride
-        uint8_t *dst = windowBuffer.bits;
+        dst = windowBuffer.bits;
         //stride表示存储一行像素需要的内存。
-        int dstStride = windowBuffer.stride * 4;
-        uint8_t *src = (uint8_t *) (pFrameRGBA->data[0]);
-        int srcStride = pFrameRGBA->linesize[0];
+        dstStride = windowBuffer.stride * 4;
+        src = (uint8_t *) (pFrameRGBA->data[0]);
+        srcStride = pFrameRGBA->linesize[0];
 
         // 由于window的stride和帧的stride不同,因此需要逐行复制
-        int h;
-        for (h = 0; h < g_video_H; ++h) {
+        for (int h = 0; h < g_video_H; ++h) {
             memcpy(dst + h * dstStride, src + h * srcStride, srcStride);
         }
 
         ANativeWindow_unlockAndPost(nativeWindow);
-        tmp_to_recycle = pFrame;
-        pFrame = NULL;
-        recycle_to_free(tmp_to_recycle);
-        LOGE("show one frame success");
+        recycle_to_free(pFrame);
+        usleep(30000);
+        //LOGE("show one frame success");
     }
     av_free(buffer);
     av_free(pFrameRGBA);
@@ -134,6 +139,8 @@ void *thread_decode_video(void *arg) {
     // Free the YUV frame
     //av_free(pAVFrame);
     freeAll();
+    pthread_t tid = pthread_self();
+    LOGE("exit:%ld",tid);
 
     error:
     //Detach主线程

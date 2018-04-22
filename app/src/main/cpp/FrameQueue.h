@@ -27,6 +27,7 @@ typedef struct _Frame{
     AVFrame *pAVFrame;
     struct _Frame *next;
     int code;//
+    int pos;
 } Frame;
 
 

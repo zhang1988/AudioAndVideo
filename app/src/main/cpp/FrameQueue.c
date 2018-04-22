@@ -65,11 +65,15 @@ Frame *obtainFrame() {
     pthread_mutex_lock(&free_list_lock);
     Frame *frame = freeList;
     if (freeList == NULL) {
+        pthread_mutex_unlock(&free_list_lock);
+        LOGE("obtainFrame:%s",frame != NULL?"success":"failed");
         return NULL;
     }
 
     if (freeList->next == NULL) {
         freeList = NULL;
+        pthread_mutex_unlock(&free_list_lock);
+        LOGE("obtainFrame:%s",frame != NULL?"success":"failed");
         return frame;
     }
 
@@ -111,6 +115,7 @@ void enqueue(Frame *frame) {
     pthread_mutex_lock(&queue_lock);
     queue_tail->next = frame;
     queue_tail = frame;
+    queue_tail->next = NULL;//必须要有
     pthread_mutex_unlock(&queue_lock);
     LOGE("enqueue:%s",frame != NULL?"success":"failed");
 }
@@ -118,11 +123,23 @@ void enqueue(Frame *frame) {
 Frame *dequeue() {
     LOGE("dequeue");
     Frame *frame = NULL;
-    pthread_mutex_lock(&queue_lock);
+    int ret;
+    ret = pthread_mutex_trylock(&queue_lock);
+    while (ret != 0) {
+        ret = pthread_mutex_trylock(&queue_lock);
+    }
+    //pthread_mutex_lock(&queue_lock);
     if (queue_head != queue_tail) {
-        frame = queue_head->next;
-        queue_head->next = frame->next;
-        frame->next = NULL;
+        //如果队列只有一个元素（不包括head），需要将tail重置
+        if (queue_head->next == queue_tail) {
+            frame = queue_tail;
+            queue_head->next = NULL;
+            queue_tail = queue_head;
+        } else {
+            frame = queue_head->next;
+            queue_head->next = frame->next;
+            frame->next = NULL;
+        }
     }
     pthread_mutex_unlock(&queue_lock);
     LOGE("dequeue:%s",frame != NULL?"success":"failed");

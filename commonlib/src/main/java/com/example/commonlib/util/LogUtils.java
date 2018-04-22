@@ -46,6 +46,29 @@ public class LogUtils {
     }
 
     /**
+     * 普通log打印
+     *
+     * @param tag
+     * @param log
+     */
+    public static void print(String tag, String log, Exception e) {
+        if (StringUtils.isEmpty(tag)) {
+            if (isDebugMode) {
+                throw new RuntimeException("log tag can not be null!");
+            }
+            return;
+        }
+
+        if (!isDebugMode) {
+            return;
+        }
+
+        String descript = log + ":" + e.getMessage();
+
+        Log.e(tag, descript);
+    }
+
+    /**
      * 调试时 临时使用
      *
      * @param log

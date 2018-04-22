@@ -1,7 +1,6 @@
 package com.zhangchao.audioandvideo.task.task_ffmpeg;
 
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -9,12 +8,9 @@ import android.view.SurfaceView;
 import android.widget.Toast;
 
 import com.example.commonlib.util.LogUtils;
-import com.example.commonlib.util.UIUtils;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
-import com.zhangchao.audioandvideo.AVApplication;
-import com.zhangchao.audioandvideo.BaseActivity;
 import com.zhangchao.audioandvideo.R;
 import com.zhangchao.audioandvideo.task.task3_CameraPreview.MediaFileHelper;
 
@@ -56,11 +52,10 @@ public class Task_FFmpegActivity extends AppCompatActivity implements SurfaceHol
     }
 
     private String getVideoPath(){
-         return MediaFileHelper.getOutputMediaFilesPath(MediaFileHelper.MEDIA_TYPE_VIDEO).get(0);
+         return MediaFileHelper.getOutputMediaFilesPath(MediaFileHelper.MEDIA_TYPE_VIDEO).get(2);
     }
 
     public void showToast(final int message){
-        LogUtils.print("hahhaaaa"+message);
         svScreen.post(new Runnable() {
             @Override
             public void run() {

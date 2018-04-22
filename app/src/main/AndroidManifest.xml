@@ -35,6 +35,7 @@
         <activity android:name=".task.task3_CameraPreview.camera2.Task3Camera2PreviewActivity" />
         <activity android:name=".task.task4_ExtractorAndMuxer.Task4ExtractorAndMuxerActivity" />
         <activity android:name=".task.task_ffmpeg.Task_FFmpegActivity"></activity>
+        <activity android:name=".task.task4_extractormuxer.Task4ExtractorAndMuxerActivity"/>
     </application>
 
 </manifest>

@@ -71,6 +71,7 @@ freeline_project_description.json
 
 # IntelliJ IDEA/Android Studio IDE file
 /.idea
+.idea
 # IntelliJ IDEA/Android Studio project file
 *.iml
 

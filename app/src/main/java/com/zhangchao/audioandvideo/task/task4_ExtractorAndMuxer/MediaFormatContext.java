@@ -5,7 +5,12 @@ import android.media.MediaFormat;
 import android.media.MediaMuxer;
 
 import com.example.commonlib.util.LogUtils;
+import com.example.commonlib.util.StringUtils;
 import com.zhangchao.audioandvideo.task.task3_CameraPreview.MediaFileHelper;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.List;
 
 /**
  * Created by zhangchao on 18-4-13.
@@ -18,10 +23,30 @@ public class MediaFormatContext {
     }
 
 
-    public void extract(){
+    public void extract(String inputFile) {
+        FileOutputStream videoFos = null;
+        FileOutputStream audioFos = null;
+        File file = null;
         mMediaExtractor = new MediaExtractor();
+        if (StringUtils.isEmpty(inputFile)) {
+            return;
+            //List<String> input = MediaFileHelper.getOutputMediaFilesPath(MediaFileHelper.MEDIA_TYPE_VIDEO);
+            //if (input.size() > 0){
+
+            //}
+        }
         try {
-            mMediaExtractor.setDataSource(MediaFileHelper.getOutputMediaFilesPath(MediaFileHelper.MEDIA_TYPE_VIDEO).get(0));
+            file = new File(inputFile);
+            if (!(file.exists() && file.isFile())) {
+                return;
+            }
+
+            mMediaExtractor.setDataSource(inputFile);
+
+            //
+            //File videoFile = new File(dcimFile,"out_video.mp4");
+            //File audioFile = new File(dcimFile,"out_audio");
+
         }catch (Exception e) {
             LogUtils.print(e.getMessage());
             return;

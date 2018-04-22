@@ -1,6 +1,5 @@
 package com.zhangchao.audioandvideo;
 
-import android.content.Context;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.widget.ImageView;
